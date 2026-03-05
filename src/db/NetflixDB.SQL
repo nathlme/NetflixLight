@@ -1,7 +1,7 @@
 /*sqlite3 NetflixLight.db*/
 
 CREATE TABLE IF NOT EXISTS users  (
-    id INT AUTOINCREMENT PRIMARY KEY,
+    id_users INT AUTOINCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     pseudo VARCHAR(100) NOT NULL UNIQUE,
@@ -10,6 +10,13 @@ CREATE TABLE IF NOT EXISTS users  (
 );
 
 
+CREATE TABLE IF NOT EXISTS favMovies (
+    id_movie INT AUTOINCREMENT PRIMARY KEY,
+    id_users INT FOREIGN KEY, 
+    movie_name VARCHAR(255) NOT NULL,
+    FOREIGN KEY (id_users) REFERENCES users(id)
+
+);
 
 
 

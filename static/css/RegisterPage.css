@@ -1,0 +1,60 @@
+/* Reset simple */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Centrage de la page */
+body {
+    height: 100vh;
+    background: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Box du formulaire */
+form {
+    background: white;
+    padding: 4vh 3vw;
+    width: 25vw;
+    border-radius: 1vh;
+    box-shadow: 0 2vh 4vh rgba(0, 0, 0, 0.15);
+}
+
+/* Labels */
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 1vh;
+}
+
+/* Inputs */
+input {
+    width: 100%;
+    padding: 1.2vh;
+    margin-top: 0.5vh;
+    border-radius: 0.6vh;
+    border: 0.15vh solid #ccc;
+    margin-bottom: 2vh;
+}
+
+/* Bouton */
+button {
+    width: 100%;
+    padding: 1.5vh;
+    border: none;
+    background: #e50914;
+    color: white;
+    font-weight: bold;
+    border-radius: 0.6vh;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+/* Hover */
+button:hover {
+    background: #b20710;
+}

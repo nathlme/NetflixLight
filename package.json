@@ -1,0 +1,28 @@
+{
+  "name": "netflixlight",
+  "version": "1.0.0",
+  "description": "Projet JS - Léo Gaiguant--Anquit & Nathan Lamarche",
+  "homepage": "https://github.com/nathlme/NetflixLight#readme",
+  "bugs": {
+    "url": "https://github.com/nathlme/NetflixLight/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathlme/NetflixLight.git"
+  },
+  "license": "ISC",
+  "author": "Léo Gaiguant--Anquit & Nathan Lamarche",
+  "type": "commonjs",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

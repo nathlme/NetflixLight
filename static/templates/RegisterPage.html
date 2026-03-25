@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+
+    <form id="registerForm" method="POST" action="/register">
+        <h1>Inscription </h1>
+    
+    <label for="pseudo">Pseudo :</label><br>
+    <input type="text" name="pseudo" id="pseudo" placeholder=""><br>
+    
+
+    <label for="email">Email :</label><br>
+    <input type="email" name="email" id="email" placeholder=""><br>
+    
+
+    <label for="password">Mot de passe :</label><br>
+    <input type="password" name="password" id="password" placeholder=""><br>
+    
+
+    <label for="confPassword">Confirmation du mot de passe :</label><br>
+    <input type="password" name="confPassword" id="confPassword" placeholder=""><br>
+    
+    <p id="message"></p><br>
+    <button type="submit">S'inscrire</button>
+    </form>
+    
+    <script src="./static/javaScript/register.js"></script>
+
+</body>
+</html>

@@ -1,6 +1,8 @@
 const express=require("express")
 const path = require("path");
 const { globalCheck } = require("./registerCheck");
+const bcrypt = require("bcrypt");
+const db = require("./db");
 
 
 const app=express()
@@ -14,13 +16,13 @@ app.use("/static", express.static(path.join(__dirname, "..", "static")));
 
 
 // Route page inscription
-app.get("/register", (req, res) => {
+app.get("/register",  (req, res) => {
     res.sendFile(path.join(__dirname, "..", "static", "templates", "RegisterPage.html"));
 });
 
 
 // Post Inscription
-app.post("/register",(req,res) => {
+app.post("/register", async (req, res) => {
     const data = req.body;
 
     const error = globalCheck(
@@ -30,19 +32,51 @@ app.post("/register",(req,res) => {
         data.confPassword
     );
 
-    if (!error) {
+    if (error) {
         return res.json({
-            success: true,
-            message: "Inscription réussie"
+            success: false,
+            message: error
         });
     }
 
-    return res.json({
-        success: false,
-        message: error
-    });
+    try {
+        const hashedPassword = await bcrypt.hash(data.password, 10);
 
-    
+        db.run(
+            `INSERT INTO users (email, password_hash, pseudo) VALUES (?, ?, ?)`,
+            [data.email, hashedPassword, data.pseudo],
+            function (err) {
+                if (err) {
+                    console.log("Erreur DB :", err);
+
+                    if (err.message.includes("UNIQUE")) {
+                        return res.json({
+                            success: false,
+                            message: "Email ou pseudo déjà utilisé"
+                        });
+                    }
+
+                    return res.json({
+                        success: false,
+                        message: "Erreur serveur"
+                    });
+                }
+
+                return res.json({
+                    success: true,
+                    message: "Inscription réussie"
+                });
+            }
+        );
+
+    } catch (err) {
+        console.log("Erreur hash :", err);
+
+        return res.json({
+            success: false,
+            message: "Erreur serveur"
+        });
+    }
 });
 
 // Accueil

@@ -28,7 +28,7 @@ form.addEventListener("submit", function(event) {
     .then(data => {
         document.getElementById("message").textContent = data.message;
         if (data.success) {
-            window.location.href = "/"
+            window.location.href = "/profile"
         }
     })
 })

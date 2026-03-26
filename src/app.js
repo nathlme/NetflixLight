@@ -4,6 +4,7 @@ const { globalCheck } = require("./registerCheck");
 const bcrypt = require("bcrypt");
 const db = require("./db");
 const { ComparePassword } = require("./loginCheck");
+const session = require("express-session");
 
 
 const app=express()
@@ -13,7 +14,17 @@ const PORT=3000
 app.use(express.json());
 // Form HTML -> Objet JS
 app.use(express.urlencoded({ extended: true }));
+
 app.use("/static", express.static(path.join(__dirname, "..", "static")));
+
+app.use(session({
+    secret: "monSecretSuperFort",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true
+    }
+}));
 
 
 // Route page inscription
@@ -22,14 +33,21 @@ app.get("/register",  (req, res) => {
 });
 
 // Route page de connexion
-app.get("/login",  (req, res) => {
+app.get("/login", redirectIfAuth, (req, res) => {
     res.sendFile(path.join(__dirname, "..", "static", "templates", "LoginPage.html"));
 });
 
 //  Route accueil
 app.get("/",(req,res) => {
     res.send('Serveur Express démarré, <a href="/register">/register</a>');
-})
+});
+
+// Route session
+app.get("/profile", requireAuth, (req, res) => {
+    res.send("Bienvenue utilisateur " + req.session.userId);
+});
+
+
 
 // Post Inscription
 app.post("/register", async (req, res) => {
@@ -94,7 +112,7 @@ app.post("/login",async (req,res) => {
     const data = req.body;
 
     db.get (
-        `SELECT email, password_hash FROM users WHERE email = ?`, [data.email],
+        `SELECT id_users, email, password_hash FROM users WHERE email = ?`, [data.email],
 
         async (err,row) => {
             if (err) {
@@ -117,9 +135,12 @@ app.post("/login",async (req,res) => {
             if (! await ComparePassword(data.password, DBPassword)) {
                 return res.json({
                     success: false,
-                    message: "Mot de pass incorrect"
+                    message: "Mot de passe incorrect"
                 });
             }
+            
+            req.session.userId = row.id_users
+
             return res.json({
                 success: true,
                 message: "Connexion réussie"
@@ -127,16 +148,49 @@ app.post("/login",async (req,res) => {
         }
     );
     
-})
+});
+
+app.post("/logout", async (req,res) => {
+    req.session.destroy( (err) => {
+        if (err){
+            return res.json({
+                success: false,
+                message: "Erreur lors de la déconnexion"
+            });
+        }
+        return res.json({
+            success: true,
+            message: "Deconnéxion réussie"
+        });
+    });
+})  
+
 
 // 404
 app.use((req,res) => {
     res.status(404).send("Route non trouvée");
 });
 
+// Check if a session existe
+function requireAuth(req, res, next) {
+    if (!req.session.userId) {
+        return res.status(401).json({
+            success: false,
+            message: "Session inéxistante"
+        });
+    }
 
+    next();
+}
 
+// Redirect to a session exist
+function redirectIfAuth(req, res, next) {
+    if (req.session.userId) {
+        return  res.redirect("/profile")
+    }
 
+    next();
+}
 
 app.listen(PORT, () => {
     console.log(`Serveur en écoute sur http://localhost:${PORT}`)

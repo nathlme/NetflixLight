@@ -1,30 +1,26 @@
+console.log ("login.js chargé");
 
-console.log("register.js chargé");
-
-const form = document.getElementById("registerForm");
+const form = document.getElementById("loginForm");
 
 form.addEventListener("submit", function(event) {
     console.log("submit intercepté");
-    event.preventDefault()
-    
-    const _email = document.getElementById("email").value
-    const _pseudo = document.getElementById("pseudo").value 
+    event.preventDefault();
+
+    const _email = document.getElementById("email").value 
     const _password = document.getElementById("password").value 
-    const _confPassword = document.getElementById("confPassword").value 
+
 
     const formData = {
         email: _email,
-        pseudo: _pseudo,
-        password: _password,
-        confPassword: _confPassword
+        password: _password 
     };
 
-    fetch ("/register", {
+    fetch ("/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-
+        
         body: JSON.stringify(formData)
     })
 
@@ -32,7 +28,7 @@ form.addEventListener("submit", function(event) {
     .then(data => {
         document.getElementById("message").textContent = data.message;
         if (data.success) {
-            window.location.href = "/login";
+            window.location.href = "/"
         }
-    });
-});
+    })
+})

@@ -3,6 +3,7 @@ const path = require("path");
 const { globalCheck } = require("./registerCheck");
 const bcrypt = require("bcrypt");
 const db = require("./db");
+const { ComparePassword } = require("./loginCheck");
 
 
 const app=express()
@@ -20,6 +21,15 @@ app.get("/register",  (req, res) => {
     res.sendFile(path.join(__dirname, "..", "static", "templates", "RegisterPage.html"));
 });
 
+// Route page de connexion
+app.get("/login",  (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "static", "templates", "LoginPage.html"));
+});
+
+//  Route accueil
+app.get("/",(req,res) => {
+    res.send('Serveur Express démarré, <a href="/register">/register</a>');
+})
 
 // Post Inscription
 app.post("/register", async (req, res) => {
@@ -79,11 +89,45 @@ app.post("/register", async (req, res) => {
     }
 });
 
-// Accueil
-app.get("/",(req,res) => {
-    res.send('Serveur Express démarré, <a href="/register">/register</a>');
-})
+// Page de connexion
+app.post("/login",async (req,res) => {
+    const data = req.body;
 
+    db.get (
+        `SELECT email, password_hash FROM users WHERE email = ?`, [data.email],
+
+        async (err,row) => {
+            if (err) {
+                console.log(err);
+                return res.json({
+                    success: false,
+                    message: err.message
+                });
+            }
+
+            if (!row) {
+                return res.json({
+                    success: false,
+                    message: "Email incorrect"
+                });
+            }
+
+            const DBPassword = row.password_hash
+
+            if (! await ComparePassword(data.password, DBPassword)) {
+                return res.json({
+                    success: false,
+                    message: "Mot de pass incorrect"
+                });
+            }
+            return res.json({
+                success: true,
+                message: "Connexion réussie"
+            });
+        }
+    );
+    
+})
 
 // 404
 app.use((req,res) => {

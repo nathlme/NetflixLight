@@ -34,8 +34,9 @@ function passwordCheck(password) {
 
 //Check the pseudo's size
 function pseudoCheck(pseudo) {
-    if(pseudo.length <= 3) return "Pseudo trop court (4 caractères minimum)"
-    return null
+    if (!pseudo) return "Pseudo requis";
+    if (pseudo.length <= 3) return "Pseudo trop court (4 caractères minimum)";
+    return null;
 }
 
 //Check if the passwords are the same 

@@ -26,6 +26,9 @@ app.use(session({
     }
 }));
 
+// On définit HBS comme moteur de rendu
+app.set('view engine', 'hbs');
+
 
 // Route page inscription
 app.get("/register",  (req, res) => {

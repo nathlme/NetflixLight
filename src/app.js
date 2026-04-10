@@ -44,7 +44,7 @@ app.get("/",(req,res) => {
 
 // Route session
 app.get("/profile", requireAuth, (req, res) => {
-    res.send("Bienvenue utilisateur " + req.session.userId);
+    res.send("Bienvenue " + req.session.pseudo);
 });
 
 
@@ -112,7 +112,7 @@ app.post("/login",async (req,res) => {
     const data = req.body;
 
     db.get (
-        `SELECT id_users, email, password_hash FROM users WHERE email = ?`, [data.email],
+        `SELECT id_users, email, password_hash, pseudo FROM users WHERE email = ?`, [data.email],
 
         async (err,row) => {
             if (err) {
@@ -140,6 +140,7 @@ app.post("/login",async (req,res) => {
             }
             
             req.session.userId = row.id_users
+            req.session.pseudo = row.pseudo
 
             return res.json({
                 success: true,

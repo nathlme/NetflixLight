@@ -10,17 +10,6 @@ const db = new sqlite3.Database(dbPath, (err) => {
         console.log("Connecté à SQLite");
     }
 });
-console.log("DB path:", dbPath);
 
-db.run(`
-    CREATE TABLE IF NOT EXISTS users (
-        id_users INTEGER PRIMARY KEY AUTOINCREMENT,
-        email TEXT NOT NULL UNIQUE,
-        password_hash TEXT NOT NULL,
-        pseudo TEXT NOT NULL UNIQUE,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        update_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-`);
 
 module.exports = db;

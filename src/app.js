@@ -42,7 +42,10 @@ app.get("/login", redirectIfAuth, (req, res) => {
 
 //  Route accueil
 app.get("/",(req,res) => {
-    res.send('Serveur Express démarré, <a href="/register">/register</a>');
+    res.render( GetTemplate("layout"), {
+        Title: "NetflixLight",
+        HTML: "Test"
+    });
 });
 
 // Route session
@@ -193,6 +196,10 @@ function redirectIfAuth(req, res, next) {
     }
 
     next();
+}
+
+function GetTemplate(name){
+    return path.join(__dirname, '..', 'static', 'templates', name)
 }
 
 app.listen(PORT, () => {

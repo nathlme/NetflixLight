@@ -33,17 +33,17 @@ app.set('view engine', 'hbs');
 
 // Route page inscription
 app.get("/register",  (req, res) => {
-    RenderPage(res, "NetflixLight - Inscription", "RegisterPage")
+    RenderPage(req, res, "NetflixLight - Inscription", "RegisterPage");
 });
 
 // Route page de connexion
 app.get("/login", redirectIfAuth, (req, res) => {
-    RenderPage(res, "NetflixLight - Connexion", "LoginPage")
+    RenderPage(req, res, "NetflixLight - Connexion", "LoginPage");
 });
 
 //  Route accueil
 app.get("/",(req,res) => {
-    RenderPage(res, "NetflixLight", "index")
+    RenderPage(req, res, "NetflixLight", "index");
 });
 
 // Route session
@@ -205,10 +205,21 @@ function GetTemplate(name){
 }
 
 //render page in the layout struct
-function RenderPage(res, title, templateName) {
+function RenderPage(req, res, title, templateName) {
+    let templateFile = GetTemplate(templateName + ".html");
+    if(!fs.existsSync(templateFile)) {
+        templateFile = GetTemplate(templateName);
+    }
+    const htmlContent = fs.readFileSync(templateFile, 'utf8');
+
+    // Détection navigation SPA
+    if (req.headers['x-spa-request'] === 'true') {
+        return res.send(htmlContent);
+    }
+
     res.render( GetTemplate("layout"), {
         Title: title,
-        HTML: fs.readFileSync(GetTemplate(templateName + ".html"), 'utf8')
+        HTML: htmlContent
     });
 }
 

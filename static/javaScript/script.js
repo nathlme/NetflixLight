@@ -73,3 +73,62 @@ function toggleMenu() {
                 }
             }
         }
+
+// ----------- ROUTEUR CLIENT (SPA) -----------
+
+// Gère la navigation via des liens internes
+document.body.addEventListener("click", e => {
+    const link = e.target.closest("a"); 
+    
+    if (!link || link.target === "_blank" || link.origin !== window.location.origin) {
+        return;
+    }
+    
+    // Empêcher le chargement classique de la page entière
+    e.preventDefault();
+
+    // Change l'URL dans la barre de recherche du navigateur sans rafraîchir
+    if (window.location.pathname !== link.pathname) {
+        window.history.pushState(null, "", link.pathname);
+        navigate(link.pathname);
+    }
+});
+
+// Gère "Précédent / Suivant"
+window.addEventListener("popstate", () => {
+    navigate(window.location.pathname);
+});
+
+// Charge le fragment HTML dynamiquement
+async function navigate(path) {
+    
+    try {
+        // Envoi avec le header personnalisé 'x-spa-request'
+        const response = await fetch(path, {
+            headers: {
+                "x-spa-request": "true"
+            }
+        });
+        
+        if (!response.ok) throw new Error("Erreur de navigation");
+
+        const html = await response.text();
+        appContent.innerHTML = html; // Injection du nouveau contenu HTML
+
+        // Ré-executer les balises '<script>' reçues
+        const newScripts = appContent.querySelectorAll("script");
+        newScripts.forEach(oldScript => {
+            const newScript = document.createElement("script");
+            Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+            newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+            oldScript.parentNode.replaceChild(newScript, oldScript);
+        });
+        
+    } catch (error) {
+        console.error("Erreur de routing:", error);
+    } finally {
+        appContent.style.opacity = "1";
+        const menu = document.getElementById("mobileMenu");
+        if(menu && !menu.classList.contains("hidden")) menu.classList.add("hidden");
+    }
+}

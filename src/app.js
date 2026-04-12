@@ -1,5 +1,6 @@
 const express=require("express")
 const path = require("path");
+const fs = require("fs");
 const { globalCheck } = require("./registerCheck");
 const bcrypt = require("bcrypt");
 const db = require("./db");
@@ -26,20 +27,23 @@ app.use(session({
     }
 }));
 
+// On définit HBS comme moteur de rendu
+app.set('view engine', 'hbs');
+
 
 // Route page inscription
 app.get("/register",  (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "static", "templates", "RegisterPage.html"));
+    RenderPage(res, "NetflixLight - Inscription", "RegisterPage")
 });
 
 // Route page de connexion
 app.get("/login", redirectIfAuth, (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "static", "templates", "LoginPage.html"));
+    RenderPage(res, "NetflixLight - Connexion", "LoginPage")
 });
 
 //  Route accueil
 app.get("/",(req,res) => {
-    res.send('Serveur Express démarré, <a href="/register">/register</a>');
+    RenderPage(res, "NetflixLight", "index")
 });
 
 // Route session
@@ -47,6 +51,9 @@ app.get("/profile", requireAuth, (req, res) => {
     res.send("Bienvenue " + req.session.pseudo);
 });
 
+app.get("/js/:filename", (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "static", "javaScript", req.params.filename));
+});
 
 
 // Post Inscription
@@ -191,6 +198,18 @@ function redirectIfAuth(req, res, next) {
     }
 
     next();
+}
+
+function GetTemplate(name){
+    return path.join(__dirname, '..', 'static', 'templates', name)
+}
+
+//render page in the layout struct
+function RenderPage(res, title, templateName) {
+    res.render( GetTemplate("layout"), {
+        Title: title,
+        HTML: fs.readFileSync(GetTemplate(templateName + ".html"), 'utf8')
+    });
 }
 
 app.listen(PORT, () => {

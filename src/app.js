@@ -49,7 +49,7 @@ app.get("/",(req,res) => {
 });
 
 // Route session
-app.get("/profile", requireAuth, (req, res) => {
+app.get("/profil", requireAuth, (req, res) => {
     res.send("Bienvenue " + req.session.pseudo);
 });
 
@@ -198,7 +198,7 @@ function requireAuth(req, res, next) {
 // Redirect to a session exist
 function redirectIfAuth(req, res, next) {
     if (req.session.userId) {
-        return  res.redirect("/profile")
+        return  res.redirect("/profil")
     }
 
     next();

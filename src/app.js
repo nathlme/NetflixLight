@@ -27,6 +27,12 @@ app.use(session({
 }));
 
 
+// Route page detail film
+app.get("/detail", (req,res) => {
+    res.sendFile(path.join(__dirname,"..","static","templates","MovieDetails.html"));
+})
+
+
 // Route page inscription
 app.get("/register",  (req, res) => {
     res.sendFile(path.join(__dirname, "..", "static", "templates", "RegisterPage.html"));
@@ -107,6 +113,7 @@ app.post("/register", async (req, res) => {
     }
 });
 
+
 // Page de connexion
 app.post("/login",async (req,res) => {
     const data = req.body;
@@ -151,6 +158,8 @@ app.post("/login",async (req,res) => {
     
 });
 
+
+
 app.post("/logout", async (req,res) => {
     req.session.destroy( (err) => {
         if (err){
@@ -172,6 +181,7 @@ app.use((req,res) => {
     res.status(404).send("Route non trouvée");
 });
 
+
 // Check if a session existe
 function requireAuth(req, res, next) {
     if (!req.session.userId) {
@@ -184,6 +194,7 @@ function requireAuth(req, res, next) {
     next();
 }
 
+
 // Redirect to a session exist
 function redirectIfAuth(req, res, next) {
     if (req.session.userId) {
@@ -193,7 +204,10 @@ function redirectIfAuth(req, res, next) {
     next();
 }
 
+
+
+
+
 app.listen(PORT, () => {
     console.log(`Serveur en écoute sur http://localhost:${PORT}`)
 });
-

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/css/output.css">
+  <title>Détail du film</title>
+</head>
+
+<body class="min-h-screen bg-zinc-950 text-white">
+  <main class="min-h-screen flex">
+    
+    <!-- COLONNE GAUCHE : POSTER -->
+    <section class="w-full max-w-[40%] min-w-[320px] bg-black flex items-center justify-center p-8">
+      <img
+        id="moviePoster"
+        class="h-[95vh] w-auto object-contain rounded-xl shadow-2xl"
+        src=""
+        alt="Affiche du film"
+      >
+    </section>
+
+    <!-- COLONNE DROITE : INFOS -->
+    <section class="flex-1 flex items-center bg-zinc-950 px-10 py-12">
+      <div class="w-full max-w-4xl space-y-8">
+        
+        <!-- TITRE -->
+        <h1 id="movieTitle" class="text-5xl font-bold leading-tight md:text-6xl"></h1>
+
+        <!-- META -->
+        <div class="flex flex-wrap gap-x-10 gap-y-3 text-base text-zinc-300">
+          <p><span class="font-semibold text-white">Date :</span> <span id="movieReleaseDate"></span></p>
+          <p><span class="font-semibold text-white">Réalisateur :</span> <span id="movieDirector"></span></p>
+          <p><span class="font-semibold text-white">Note :</span> <span id="movieRating"></span></p>
+        </div>
+
+        <!-- GENRES -->
+        <div>
+          <h2 class="mb-2 text-xl font-semibold text-white">Genres</h2>
+          <p id="movieGenres" class="text-lg text-zinc-400"></p>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div>
+          <h2 class="mb-3 text-2xl font-semibold text-white">Synopsis</h2>
+          <p id="movieDescription" class="max-w-3xl text-lg leading-8 text-zinc-300"></p>
+        </div>
+
+        <!-- BOUTONS -->
+        <div class="flex gap-4 pt-4">
+          <button class="rounded-lg bg-red-600 px-8 py-3 text-base font-semibold text-white transition hover:bg-red-700">
+            Regarder
+          </button>
+          <button class="rounded-lg border border-zinc-600 bg-zinc-800 px-8 py-3 text-base font-semibold text-white transition hover:bg-zinc-700">
+            Ajouter à ma liste
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="/static/javaScript/movieDetails.js"></script>
+</body>
+</html>

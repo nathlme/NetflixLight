@@ -33,8 +33,13 @@ app.set('view engine', 'hbs');
 
 
 // Route page detail film
-app.get("/detail", (req,res) => {
+app.get(["/detail", "/detail/:type/:id"], (req,res) => {
     res.sendFile(path.join(__dirname,"..","static","templates","MovieDetails.html"));
+})
+
+// Route page lecteur video
+app.get(["/play", "/play/:type/:id"], (req,res) => {
+    res.sendFile(path.join(__dirname,"..","static","templates","PlayerPage.html"));
 })
 
 

@@ -57,6 +57,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         const descEl = document.getElementById('movieDescription');
         if (descEl) descEl.innerText = data.overview || 'Aucun synopsis disponible.';
 
+        // Lancement du lecteur vidéo
+        const watchButton = document.getElementById('watchButton');
+        if (watchButton) {
+            watchButton.addEventListener('click', () => {
+                // Redirige vers la page de lecture video
+                window.location.href = `/play/${type}/${id}`;
+            });
+        }
+
     } catch (error) {
         console.error('Erreur de chargement des d챕tails du film :', error);
     }

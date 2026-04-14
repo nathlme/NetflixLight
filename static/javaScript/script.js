@@ -204,6 +204,7 @@ window.addEventListener("popstate", () => {
 
 // Charge le fragment HTML dynamiquement
 async function navigate(path) {
+    const appContent = document.getElementById("app-content");
     
     try {
         // Envoi avec le header personnalisé 'x-spa-request'

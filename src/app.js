@@ -50,7 +50,7 @@ app.get("/login", redirectIfAuth, (req, res) => {
 
 //  Route accueil
 app.get("/",(req,res) => {
-    RenderPage(res, "NetflixLight", "index")
+    RenderPage(req, res, "NetflixLight", "index");
 });
 
 // Route backend pour TMDB

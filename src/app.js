@@ -47,7 +47,7 @@ app.get("/",(req,res) => {
     RenderPage(res, "NetflixLight", "index")
 });
 
-// Route backend proxy pour TMDB
+// Route backend pour TMDB
 app.use('/api/tmdb/', async (req, res) => {
     try {
         const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
@@ -206,7 +206,7 @@ app.get("/content/:type/:id", (req, res) => {
 
     res.render(GetTemplate("layout"), {
         Title: "NetflixLight - Détail",
-        HTML: fs.readFileSync(GetTemplate("detail.html"), 'utf8')
+        HTML: fs.readFileSync(GetTemplate("MovieDetails.html"), 'utf8')
     });
 });
 

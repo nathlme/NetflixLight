@@ -73,3 +73,37 @@ function toggleMenu() {
                 }
             }
         }
+
+        // Fetch des données TMDB
+        async function fetchTrendingMovies() {
+            const carousel = document.getElementById('carousel-1');
+            if (!carousel) return; // Uniquement si sur la page d'accueil
+
+            try {
+                const response = await fetch('/api/trending');
+                const data = await response.json();
+
+                if (data.results) {
+                    carousel.innerHTML = '';
+                    data.results.forEach(movie => {
+                        const posterPath = movie.poster_path 
+                            ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` 
+                            : 'https://via.placeholder.com/400x600?text=Indisponible';
+
+                        const movieCard = `
+                            <div class="flex-none w-32 md:w-48 aspect-[2/3] bg-gray-800 rounded-md overflow-hidden relative group cursor-pointer snap-start transition duration-300 hover:scale-105 hover:z-20 hover:ring-2 hover:ring-gray-400">
+                                <img src="${posterPath}" alt="${movie.title || movie.name}" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                    <svg class="w-12 h-12 text-white drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                </div>
+                            </div>
+                        `;
+                        carousel.insertAdjacentHTML('beforeend', movieCard);
+                    });
+                }
+            } catch (error) {
+                console.error("Erreur lors de la récupération des films:", error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchTrendingMovies);

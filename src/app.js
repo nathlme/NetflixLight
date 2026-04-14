@@ -1,4 +1,5 @@
 const express=require("express")
+require("dotenv").config();
 const path = require("path");
 const fs = require("fs");
 const { globalCheck } = require("./registerCheck");
@@ -44,6 +45,24 @@ app.get("/login", redirectIfAuth, (req, res) => {
 //  Route accueil
 app.get("/",(req,res) => {
     RenderPage(res, "NetflixLight", "index")
+});
+
+// Route api TMDB
+app.get("/api/trending", async (req, res) => {
+    try {
+        const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+        const response = await fetch("https://api.themoviedb.org/3/trending/movie/day?language=fr-FR", {
+            headers: {
+                Authorization: `Bearer ${process.env.API_TOKEN}`,
+                "Content-Type": "application/json"
+            }
+        });
+        const data = await response.json();
+        res.json(data);
+    } catch (error) {
+        console.error("Error fetching TMDB:", error);
+        res.status(500).json({ error: "Failed to fetch movies" });
+    }
 });
 
 // Route session
@@ -172,6 +191,23 @@ app.post("/logout", async (req,res) => {
     });
 })  
 
+
+// TMDB Route
+app.get("/api/trending", async (req, res) => {
+    try {
+        const response = await fetch('https://api.themoviedb.org/3/trending/movie/day?language=fr-FR', {
+            headers: {
+                acccept: 'application/json',
+                Authorization: `Bearer ${process.env.API_TOKEN}`
+            }
+        });
+        const data = await response.json();
+        res.json(data);
+    } catch (error) {
+        console.error('Erreur API TMDB:', error);
+        res.status(500).json({ success: false, message: 'Erreur lors de la récupération des données.' });
+    }
+});
 
 // 404
 app.use((req,res) => {

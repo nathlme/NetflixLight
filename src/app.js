@@ -31,6 +31,12 @@ app.use(session({
 app.set('view engine', 'hbs');
 
 
+// Route page detail film
+app.get("/detail", (req,res) => {
+    res.sendFile(path.join(__dirname,"..","static","templates","MovieDetails.html"));
+})
+
+
 // Route page inscription
 app.get("/register",  (req, res) => {
     RenderPage(req, res, "NetflixLight - Inscription", "RegisterPage");
@@ -47,7 +53,7 @@ app.get("/",(req,res) => {
 });
 
 // Route session
-app.get("/profile", requireAuth, (req, res) => {
+app.get("/profil", requireAuth, (req, res) => {
     res.send("Bienvenue " + req.session.pseudo);
 });
 
@@ -114,6 +120,7 @@ app.post("/register", async (req, res) => {
     }
 });
 
+
 // Page de connexion
 app.post("/login",async (req,res) => {
     const data = req.body;
@@ -158,6 +165,8 @@ app.post("/login",async (req,res) => {
     
 });
 
+
+
 app.post("/logout", async (req,res) => {
     req.session.destroy( (err) => {
         if (err){
@@ -179,6 +188,7 @@ app.use((req,res) => {
     res.status(404).send("Route non trouvée");
 });
 
+
 // Check if a session existe
 function requireAuth(req, res, next) {
     if (!req.session.userId) {
@@ -191,10 +201,11 @@ function requireAuth(req, res, next) {
     next();
 }
 
+
 // Redirect to a session exist
 function redirectIfAuth(req, res, next) {
     if (req.session.userId) {
-        return  res.redirect("/profile")
+        return  res.redirect("/profil")
     }
 
     next();
@@ -226,4 +237,3 @@ function RenderPage(req, res, title, templateName) {
 app.listen(PORT, () => {
     console.log(`Serveur en écoute sur http://localhost:${PORT}`)
 });
-

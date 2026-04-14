@@ -9,7 +9,18 @@ const page = document.getElementById("page");
 const muteBtn = document.getElementById("muteBtn");
 const volumeSlider = document.getElementById("volumeSlider");
 
+function updateVolumeSlider() {
+    const value = volumeSlider.value * 100;
+    volumeSlider.style.background =
+        `linear-gradient(to right, red ${value}%, #444 ${value}%)`;
+}
 
+updateVolumeSlider();
+
+volumeSlider.addEventListener("input", () => {
+    video.volume = volumeSlider.value;
+    updateVolumeSlider();
+});
 volumeSlider.addEventListener("input", () => {
     video.volume = volumeSlider.value;
 

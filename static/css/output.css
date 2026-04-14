@@ -443,6 +443,9 @@
   .w-32 {
     width: calc(var(--spacing) * 32);
   }
+  .w-40 {
+    width: calc(var(--spacing) * 40);
+  }
   .w-48 {
     width: calc(var(--spacing) * 48);
   }
@@ -660,6 +663,9 @@
   }
   .border-gray-700 {
     border-color: var(--color-gray-700);
+  }
+  .border-red-500 {
+    border-color: var(--color-red-500);
   }
   .border-red-600 {
     border-color: var(--color-red-600);

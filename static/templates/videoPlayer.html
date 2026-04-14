@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/soundBar.css">
     <title>Video Player</title>
 </head>
 
@@ -27,8 +28,10 @@
 
                 <div class="flex gap-3">
                     <button id="playPauseBtn" class="bg-transparent border-0 outline-none focus:outline-none active:bg-transparent"></button>
+                    <div class="flex items-center gap-3 w-40">
                     <button id="muteBtn">🔊</button>
-                    <input id="volumeSlider" type="range" min="0" max="1" step="0.01" value="1" />
+                    <input id="volumeSlider" type="range" min="0" max="1" step="0.01" value="1" class="flex-1" />
+                    </div>
                 </div>
 
                 <div class="flex gap-3">

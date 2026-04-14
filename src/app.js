@@ -47,11 +47,15 @@ app.get("/",(req,res) => {
     RenderPage(res, "NetflixLight", "index")
 });
 
-// Route api TMDB
-app.get("/api/trending", async (req, res) => {
+// Route backend proxy pour TMDB
+app.use('/api/tmdb/', async (req, res) => {
     try {
         const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-        const response = await fetch("https://api.themoviedb.org/3/trending/movie/day?language=fr-FR", {
+        const endpoint = req.path.replace(/^\//, "");
+        const params = new URLSearchParams(req.query);
+        const url = `https://api.themoviedb.org/3/${endpoint}?${params.toString()}`;
+
+        const response = await fetch(url, {
             headers: {
                 Authorization: `Bearer ${process.env.API_TOKEN}`,
                 "Content-Type": "application/json"
@@ -61,7 +65,7 @@ app.get("/api/trending", async (req, res) => {
         res.json(data);
     } catch (error) {
         console.error("Error fetching TMDB:", error);
-        res.status(500).json({ error: "Failed to fetch movies" });
+        res.status(500).json({ error: "Failed to fetch from TMDB" });
     }
 });
 
@@ -192,21 +196,18 @@ app.post("/logout", async (req,res) => {
 })  
 
 
-// TMDB Route
-app.get("/api/trending", async (req, res) => {
-    try {
-        const response = await fetch('https://api.themoviedb.org/3/trending/movie/day?language=fr-FR', {
-            headers: {
-                acccept: 'application/json',
-                Authorization: `Bearer ${process.env.API_TOKEN}`
-            }
-        });
-        const data = await response.json();
-        res.json(data);
-    } catch (error) {
-        console.error('Erreur API TMDB:', error);
-        res.status(500).json({ success: false, message: 'Erreur lors de la récupération des données.' });
+// Route Content pour le détail Movie/TV
+app.get("/content/:type/:id", (req, res) => {
+    // on gère type: movie | tv
+    const { type, id } = req.params;
+    if (type !== "movie" && type !== "tv") {
+        return res.status(404).send("Type inconnu.");
     }
+
+    res.render(GetTemplate("layout"), {
+        Title: "NetflixLight - Détail",
+        HTML: fs.readFileSync(GetTemplate("detail.html"), 'utf8')
+    });
 });
 
 // 404
@@ -250,4 +251,7 @@ function RenderPage(res, title, templateName) {
 app.listen(PORT, () => {
     console.log(`Serveur en écoute sur http://localhost:${PORT}`)
 });
+
+
+
 

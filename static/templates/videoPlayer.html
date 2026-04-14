@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <link rel="stylesheet" href="/static/css/soundBar.css">
+    <title>Video Player</title>
+</head>
+
+<body>
+    <div id="page" class="bg-gray-900 flex"> 
+         
+        <div id="videoContainer" class="relative w-[1000px]">
+
+            <video id="videoPlayer" class="w-full">
+                <source src="/static/video/demo.mp4" type="video/mp4">
+            </video>
+
+
+            <div id="controls" class="absolute bottom-0 left-0 w-full bg-gray-500/40 p-4 flex flex-col gap-2">
+
+            <div id="progressWrapper" class="relative w-full">
+                <div id="hoverTime" class="absolute -top-8 hidden rounded bg-black px-2 py-1 text-xs text-white">
+                    0:00
+                </div>
+
+                <div id="progressBar" class="w-full h-2 bg-gray-600 rounded cursor-pointer">
+                    <div id="progressFill" class="h-full w-0 bg-red-600 rounded"></div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-white">
+
+                <div class="flex gap-3">
+                    <button id="playPauseBtn" class="bg-transparent border-0 outline-none focus:outline-none active:bg-transparent"></button>
+                    <div class="flex items-center gap-3 w-40">
+                    <button id="muteBtn">🔊</button>
+                    <input id="volumeSlider" type="range" min="0" max="1" step="0.01" value="1" class="flex-1" />
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <span id="timeDisplay"></span>
+                    <button id="fullScreenBtn">⛶</button>
+                </div>
+
+            </div>
+        </div>
+
+        </div>
+        
+    </div>
+
+    <script src="/static/javaScript/moviePlayer.js"></script>
+</body>
+</html>

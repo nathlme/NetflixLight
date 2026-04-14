@@ -79,6 +79,7 @@ web_modules/
 out
 
 .output.css
+static/css/output.css
 
 # Nuxt.js build / generate output
 .nuxt

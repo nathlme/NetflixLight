@@ -1,6 +1,7 @@
 // Video
 const container = document.getElementById("videoContainer");
 const video = document.getElementById("videoPlayer");
+const page = document.getElementById("page");
 
 
 
@@ -55,10 +56,10 @@ function formatTime(time) {
 function togglePlayPause() {
     if (video.paused) {
         video.play();
-        playBtn.textContent = "▶";
+        playBtn.textContent = "▶︎";
     } else {
         video.pause();
-        playBtn.textContent = "⏸";
+        playBtn.textContent = "||";
     }
 }
 
@@ -115,7 +116,7 @@ function showControls() {
     }, 3000);
 }
 
-container.addEventListener("mousemove", showControls);
+page.addEventListener("mousemove", showControls);
  
 
 

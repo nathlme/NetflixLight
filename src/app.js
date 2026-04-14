@@ -1,4 +1,5 @@
 const express=require("express")
+require("dotenv").config();
 const path = require("path");
 const fs = require("fs");
 const { globalCheck } = require("./registerCheck");
@@ -49,7 +50,29 @@ app.get("/login", redirectIfAuth, (req, res) => {
 
 //  Route accueil
 app.get("/",(req,res) => {
-    RenderPage(req, res, "NetflixLight", "index");
+    RenderPage(res, "NetflixLight", "index")
+});
+
+// Route backend pour TMDB
+app.use('/api/tmdb/', async (req, res) => {
+    try {
+        const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+        const endpoint = req.path.replace(/^\//, "");
+        const params = new URLSearchParams(req.query);
+        const url = `https://api.themoviedb.org/3/${endpoint}?${params.toString()}`;
+
+        const response = await fetch(url, {
+            headers: {
+                Authorization: `Bearer ${process.env.API_TOKEN}`,
+                "Content-Type": "application/json"
+            }
+        });
+        const data = await response.json();
+        res.json(data);
+    } catch (error) {
+        console.error("Error fetching TMDB:", error);
+        res.status(500).json({ error: "Failed to fetch from TMDB" });
+    }
 });
 
 // Route session
@@ -183,6 +206,20 @@ app.post("/logout", async (req,res) => {
 })  
 
 
+// Route Content pour le détail Movie/TV
+app.get("/content/:type/:id", (req, res) => {
+    // on gère type: movie | tv
+    const { type, id } = req.params;
+    if (type !== "movie" && type !== "tv") {
+        return res.status(404).send("Type inconnu.");
+    }
+
+    res.render(GetTemplate("layout"), {
+        Title: "NetflixLight - Détail",
+        HTML: fs.readFileSync(GetTemplate("MovieDetails.html"), 'utf8')
+    });
+});
+
 // 404
 app.use((req,res) => {
     res.status(404).send("Route non trouvée");
@@ -237,3 +274,7 @@ function RenderPage(req, res, title, templateName) {
 app.listen(PORT, () => {
     console.log(`Serveur en écoute sur http://localhost:${PORT}`)
 });
+
+
+
+

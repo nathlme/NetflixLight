@@ -74,6 +74,109 @@ function toggleMenu() {
             }
         }
 
+        // Fetch des données TMDB
+        const categories = [
+            { id: 'trending', title: 'Tendances du moment', endpoint: 'trending/all/day', type: 'mixed' },
+            { id: 'popular_movies', title: 'Films populaires', endpoint: 'movie/popular', type: 'movie' },
+            { id: 'popular_tv', title: 'Séries populaires', endpoint: 'tv/popular', type: 'tv' },
+            { id: 'top_rated', title: 'Les mieux notés', endpoint: 'movie/top_rated', type: 'movie' },
+            { id: 'action', title: 'Action', endpoint: 'discover/movie', query: 'with_genres=28', type: 'movie' },
+            { id: 'comedy', title: 'Comédie', endpoint: 'discover/movie', query: 'with_genres=35', type: 'movie' }
+        ];
+
+        async function fetchTMDB(endpoint, query = '') {
+            try {
+                const response = await fetch(`/api/tmdb/${endpoint}?language=fr-FR&${query}`);
+                return await response.json();
+            } catch (error) {
+                console.error("Erreur fetch TMDB:", error);
+                return null;
+            }
+        }
+
+        async function initHome() {
+            const container = document.getElementById('carousels-container');
+            if (!container) return; // Uniquement sur page d'accueil
+
+            // Fetch trending pour le hero banner
+            const trendingData = await fetchTMDB('trending/all/day');
+            if (trendingData && trendingData.results && trendingData.results.length > 0) {
+                const heroItem = trendingData.results[Math.floor(Math.random() * Math.min(10, trendingData.results.length))];
+                setupHeroBanner(heroItem);
+            }
+
+            container.innerHTML = '';
+            for (const cat of categories) {
+                const data = await fetchTMDB(cat.endpoint, cat.query);
+                if (data && data.results) {
+                    renderCarousel(container, cat, data.results);
+                }
+            }
+        }
+
+        function setupHeroBanner(item) {
+            const backdrop = item.backdrop_path ? `https://image.tmdb.org/t/p/original${item.backdrop_path}` : 'https://via.placeholder.com/2000x1000';
+            const title = item.title || item.name || item.original_title;
+            const overview = item.overview || 'Aucune description disponible pour ce contenu.';
+            const type = item.media_type || 'movie';
+
+            document.getElementById('hero-image').src = backdrop;
+            document.getElementById('hero-title').innerText = title;
+            document.getElementById('hero-overview').innerText = overview;
+
+            const playBtn = document.getElementById('hero-play-btn');
+            playBtn.onclick = () => window.location.href = `/content/${type}/${item.id}`;
+            const infoBtn = document.getElementById('hero-info-btn');
+            infoBtn.onclick = () => window.location.href = `/content/${type}/${item.id}`;
+        }
+
+        function renderCarousel(container, cat, items) {
+            const carouselHTML = `
+            <section>
+                <h2 class="text-lg md:text-2xl font-bold text-gray-100 mb-3 md:mb-5 px-1 tracking-wide">${cat.title}</h2>
+                <div class="relative group/carousel">
+                    <!-- Flèche Gauche -->
+                    <button onclick="document.getElementById('carousel-${cat.id}').scrollBy({left: -window.innerWidth / 1.5, behavior: 'smooth'})" class="absolute left-0 top-2 bottom-4 z-40 bg-black/50 hover:bg-black/80 text-white w-10 flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity hidden md:flex rounded-l-md cursor-pointer backdrop-blur-sm">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+
+                    <div id="carousel-${cat.id}" class="flex gap-3 md:gap-4 overflow-x-auto pb-4 pt-2 scroll-smooth snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                        ${items.map(item => {
+                            const poster = item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : 'https://via.placeholder.com/400x600';
+                            const title = (item.title || item.name || '').replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+                            const releaseDate = item.release_date || item.first_air_date || '';
+                            const year = releaseDate ? releaseDate.split('-')[0] : '';
+                            const rating = item.vote_average ? item.vote_average.toFixed(1) : '?';
+                            const itemType = item.media_type || cat.type;
+
+                            return `
+                            <div onclick="window.location.href='/content/${itemType}/${item.id}'" class="flex-none w-32 md:w-48 aspect-[2/3] bg-gray-800 rounded-md overflow-hidden relative group cursor-pointer snap-start transition duration-300 hover:scale-105 hover:z-20 hover:ring-2 hover:ring-gray-400">
+                                <img src="${poster}" alt="${title}" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-2 text-center">
+                                    <h3 class="text-white font-bold text-sm mb-2 line-clamp-2">${title}</h3>
+                                    <p class="text-gray-300 text-xs mb-1">${year}</p>
+                                    <p class="text-green-400 text-sm font-bold flex items-center gap-1">
+                                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        ${rating}
+                                    </p>
+                                </div>
+                            </div>
+                            `;
+                        }).join('')}
+                    </div>
+
+                    <!-- Flèche Droite -->
+                    <button onclick="document.getElementById('carousel-${cat.id}').scrollBy({left: window.innerWidth / 1.5, behavior: 'smooth'})" class="absolute right-0 top-2 bottom-4 z-40 bg-black/50 hover:bg-black/80 text-white w-10 flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity hidden md:flex rounded-r-md cursor-pointer backdrop-blur-sm">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </section>
+            `;
+            container.insertAdjacentHTML('beforeend', carouselHTML);
+        }
+
+        document.addEventListener('DOMContentLoaded', initHome);
+
 // ----------- ROUTEUR CLIENT (SPA) -----------
 
 // Gère la navigation via des liens internes

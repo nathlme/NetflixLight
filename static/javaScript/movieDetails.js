@@ -1,24 +1,63 @@
+document.addEventListener('DOMContentLoaded', async () => {
+    const pathParts = window.location.pathname.split('/');
+    const type = pathParts[2];
+    const id = pathParts[3];
 
-const params = new URLSearchParams(window.location.search);
-const movieId = params.get("id");
+    if (!id || !type) return;
 
-console.log(movieId);
-console.log("movieDetails.js chargé");
+    try {
+        const response = await fetch('/api/tmdb/' + type + '/' + id + '?language=fr-FR&append_to_response=credits,videos');
+        const data = await response.json();
 
-const movie = {
-  title: "Inception",
-  description: "Un voleur spécialisé dans l'extraction de secrets via les rêves reçoit une mission très particulière.",
-  director: "Christopher Nolan",
-  releaseDate: "2010-07-16",
-  rating: "8.8",
-  genres: "Science-fiction, Thriller",
-  posterUrl: "static/images/inception.jpg"
-};
+        // Titre
+        const titleEl = document.getElementById('movieTitle');
+        if (titleEl) titleEl.innerText = data.title || data.name;
 
-document.getElementById("movieTitle").textContent = movie.title;
-document.getElementById("movieDescription").textContent = movie.description;
-document.getElementById("movieDirector").textContent = movie.director;
-document.getElementById("movieReleaseDate").textContent = movie.releaseDate;
-document.getElementById("movieRating").textContent = movie.rating;
-document.getElementById("movieGenres").textContent = movie.genres;
-document.getElementById("moviePoster").src = movie.posterUrl;
+        // Poster
+        const posterEl = document.getElementById('moviePoster');
+        if (posterEl) {
+            posterEl.src = data.poster_path 
+                ? 'https://image.tmdb.org/t/p/w500' + data.poster_path 
+                : 'https://via.placeholder.com/400x600';
+            posterEl.alt = data.title || data.name;
+        }
+
+        // Date de sortie
+        const releaseEl = document.getElementById('movieReleaseDate');
+        if (releaseEl) {
+            const date = data.release_date || data.first_air_date;
+            releaseEl.innerText = date ? new Date(date).toLocaleDateString('fr-FR') : 'Non disponible';
+        }
+
+        // Réalisateur / Créateur
+        const directorEl = document.getElementById('movieDirector');
+        if (directorEl && data.credits) {
+            const crew = data.credits.crew;
+            const director = crew.find(member => member.job === 'Director');
+            if (director) {
+                directorEl.innerText = director.name;
+            } else if (data.created_by && data.created_by.length > 0) {
+                directorEl.innerText = data.created_by.map(c => c.name).join(', ');
+            } else {
+                directorEl.innerText = 'Non sp챕cifi챕';
+            }
+        }
+
+        // Note
+        const ratingEl = document.getElementById('movieRating');
+        if (ratingEl) ratingEl.innerText = data.vote_average ? data.vote_average.toFixed(1) + '/10' : 'N/A';
+
+        // Genres
+        const genresEl = document.getElementById('movieGenres');
+        if (genresEl) {
+            genresEl.innerText = data.genres ? data.genres.map(g => g.name).join(', ') : 'Non sp챕cifi챕';
+        }
+
+        // Synopsis
+        const descEl = document.getElementById('movieDescription');
+        if (descEl) descEl.innerText = data.overview || 'Aucun synopsis disponible.';
+
+    } catch (error) {
+        console.error('Erreur de chargement des d챕tails du film :', error);
+    }
+});

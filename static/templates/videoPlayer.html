@@ -20,8 +20,14 @@
 
             <div id="controls" class="absolute bottom-0 left-0 w-full bg-gray-500/40 p-4 flex flex-col gap-2">
 
-            <div id="progressBar" class="w-full h-2 bg-gray-600 cursor-pointer rounded">
-                <div id="progressFill" class="h-full w-0 bg-red-600 rounded"></div>
+            <div id="progressWrapper" class="relative w-full">
+                <div id="hoverTime" class="absolute -top-8 hidden rounded bg-black px-2 py-1 text-xs text-white">
+                    0:00
+                </div>
+
+                <div id="progressBar" class="w-full h-2 bg-gray-600 rounded cursor-pointer">
+                    <div id="progressFill" class="h-full w-0 bg-red-600 rounded"></div>
+                </div>
             </div>
 
             <div class="flex justify-between items-center text-white">

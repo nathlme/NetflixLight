@@ -5,6 +5,7 @@ const page = document.getElementById("page");
 
 
 
+
 // Son 
 const muteBtn = document.getElementById("muteBtn");
 const volumeSlider = document.getElementById("volumeSlider");
@@ -50,6 +51,7 @@ muteBtn.addEventListener("click", () => {
 const playBtn = document.getElementById("playPauseBtn");
 const progressBar = document.getElementById("progressBar");
 const progressFill = document.getElementById("progressFill");
+const hoverTime = document.getElementById("hoverTime");
 
 
 function formatTime(time) {
@@ -109,7 +111,21 @@ progressBar.addEventListener("click", (event) => {
     video.currentTime = percent * video.duration;
 });
 
+progressBar.addEventListener("mousemove", (event) => {
+    const rect = progressBar.getBoundingClientRect();
+    const mouseX = event.clientX - rect.left;
 
+    const percent = mouseX / rect.width;
+    const hoverVideoTime = percent * video.duration;
+
+    hoverTime.textContent = formatTime(hoverVideoTime);
+    hoverTime.style.left = `${mouseX}px`;
+    hoverTime.classList.remove("hidden");
+});
+
+progressBar.addEventListener("mouseleave", () => {
+    hoverTime.classList.add("hidden");
+});
 
 // Full Screen
 const fullBtn = document.getElementById("fullScreenBtn");

@@ -33,7 +33,7 @@ app.set('view engine', 'hbs');
 
 // Route page detail film
 app.get("/detail", (req,res) => {
-    res.sendFile(path.join(__dirname,"..","static","templates","MovieDetails.html"));
+    RenderPage(req, res, "NetflixLight - Détails", "MovieDetails");
 })
 
 
@@ -56,6 +56,11 @@ app.get("/",(req,res) => {
 app.get("/profil", requireAuth, (req, res) => {
     res.send("Bienvenue " + req.session.pseudo);
 });
+
+app.get("/video", (req,res) => {
+    RenderPage(req, res, "NetflixLight - Lecteur", "videoPlayer");
+});
+
 
 app.get("/js/:filename", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "static", "javaScript", req.params.filename));
@@ -205,7 +210,7 @@ function requireAuth(req, res, next) {
 // Redirect to a session exist
 function redirectIfAuth(req, res, next) {
     if (req.session.userId) {
-        return  res.redirect("/profil")
+        return  res.redirect("/")
     }
 
     next();
@@ -214,6 +219,7 @@ function redirectIfAuth(req, res, next) {
 function GetTemplate(name){
     return path.join(__dirname, '..', 'static', 'templates', name)
 }
+
 
 //render page in the layout struct
 function RenderPage(req, res, title, templateName) {
@@ -233,6 +239,7 @@ function RenderPage(req, res, title, templateName) {
         HTML: htmlContent
     });
 }
+
 
 app.listen(PORT, () => {
     console.log(`Serveur en écoute sur http://localhost:${PORT}`)

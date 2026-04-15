@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#111827">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <title>{{Title}}</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+    <header>
+        <nav class="bg-gray-900 text-white py-4 sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
+                <div class="text-2xl font-bold text-red-600"><a href="/"> NetflixLight</a></div>
+                
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="/" class="hover:text-gray-300 transition">Accueil</a>
+                    <a href="/list" class="hover:text-gray-300 transition">Ma liste</a>
+                    <input id="searchInputDesktop" type="text" placeholder="Rechercher..." class="bg-gray-800 text-white px-3 py-2 rounded placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600">
+                </div>
+                <div id="compte" class="flex items-center">
+                    <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-red-600"></div>
+                </div>
+            </div>
+
+            <div id="mobileMenu" class="hidden md:hidden bg-gray-800 mt-4 py-4 px-4 space-y-3">
+                <a href="/" class="block hover:text-gray-300 transition">Accueil</a>
+                <a href="/list" class="block hover:text-gray-300 transition">Ma liste</a>
+                <input id="searchInputMobile" type="text" placeholder="Rechercher..." class="w-full bg-gray-700 text-white px-3 py-2 rounded placeholder-gray-500">
+                <div id="compteMobile">
+
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div id="app-content">
+        {{{HTML}}}
+    </div>
+
+    <footer class="bg-gray-900 text-gray-300 py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-white font-bold mb-4">Société</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white transition">À propos</a></li>
+                        <li><a href="#" class="hover:text-white transition">Carrières</a></li>
+                        <li><a href="#" class="hover:text-white transition">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white transition">Centre d'aide</a></li>
+                        <li><a href="#" class="hover:text-white transition">Contact</a></li>
+                        <li><a href="#" class="hover:text-white transition">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-4">Légal</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white transition">Conditions</a></li>
+                        <li><a href="#" class="hover:text-white transition">Confidentialité</a></li>
+                        <li><a href="#" class="hover:text-white transition">Cookies</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-4">Nous suivre</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white transition">Facebook</a></li>
+                        <li><a href="#" class="hover:text-white transition">Twitter</a></li>
+                        <li><a href="#" class="hover:text-white transition">Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8">
+                <p class="text-center text-gray-400">&copy; 2026 NetflixLight. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/pwa.js?v=4"></script>
+    <script src="/js/script.js?v=5"></script>
+</body>
+</html>

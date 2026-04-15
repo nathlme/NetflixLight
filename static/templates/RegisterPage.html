@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/output.css">
+    <title>Register</title>
+</head>
+
+<body class="min-h-screen bg-black text-white">
+  <div class="relative min-h-screen flex items-center justify-center bg-[url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1974&auto=format&fit=crop')] bg-cover bg-center">
+    
+    <div class="absolute inset-0 bg-black/70"></div>
+
+    <div class="relative z-10 w-full max-w-md bg-black/75 rounded-lg px-8 py-10 shadow-2xl">
+      <form id="registerForm" method="POST" action="/register" class="space-y-5">
+        <h1 class="text-3xl font-bold">Inscription</h1>
+
+        <div>
+          <label for="pseudo" class="block mb-2 text-sm text-gray-300">Pseudo</label>
+          <input
+            class="w-full rounded-md bg-gray-700/80 px-4 py-3 text-white placeholder-gray-400 outline-none border border-transparent focus:border-white"
+            type="text"
+            name="pseudo"
+            id="pseudo"
+            placeholder="Votre pseudo"
+          />
+        </div>
+
+        <div>
+          <label for="email" class="block mb-2 text-sm text-gray-300">Email</label>
+          <input
+            class="w-full rounded-md bg-gray-700/80 px-4 py-3 text-white placeholder-gray-400 outline-none border border-transparent focus:border-white"
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Votre email"
+          />
+        </div>
+
+        <div>
+          <label for="password" class="block mb-2 text-sm text-gray-300">Mot de passe</label>
+          <input
+            class="w-full rounded-md bg-gray-700/80 px-4 py-3 text-white placeholder-gray-400 outline-none border border-transparent focus:border-white"
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Votre mot de passe"
+          />
+        </div>
+
+        <div>
+          <label for="confPassword" class="block mb-2 text-sm text-gray-300">Confirmation du mot de passe</label>
+          <input
+            class="w-full rounded-md bg-gray-700/80 px-4 py-3 text-white placeholder-gray-400 outline-none border border-transparent focus:border-white"
+            type="password"
+            name="confPassword"
+            id="confPassword"
+            placeholder="Confirmez votre mot de passe"
+          />
+        </div>
+
+        <p id="message" class="text-sm text-red-500 min-h-[20px]"></p>
+
+        <button
+          class="w-full rounded-md bg-red-600 py-3 font-semibold transition hover:bg-red-700"
+          type="submit"
+        >
+          S'inscrire
+        </button>
+      </form>
+
+      <p class="mt-6 text-gray-400 text-sm">
+        Déjà inscrit ?
+        <a href="/login" class="text-white hover:underline">Connectez-vous !</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="/static/javaScript/register.js"></script>
+</body>
+</html>

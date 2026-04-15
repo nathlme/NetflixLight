@@ -29,6 +29,7 @@
 
         <!-- META -->
         <div class="flex flex-wrap gap-x-10 gap-y-3 text-base text-zinc-300">
+          <p><span class="font-semibold text-white"></span> <span id="movieDuration"></span></p>
           <p><span class="font-semibold text-white">Date :</span> <span id="movieReleaseDate"></span></p>
           <p><span class="font-semibold text-white">Réalisateur :</span> <span id="movieDirector"></span></p>
           <p><span class="font-semibold text-white">Note :</span> <span id="movieRating"></span></p>
@@ -54,6 +55,11 @@
           <button class="rounded-lg border border-zinc-600 bg-zinc-800 px-8 py-3 text-base font-semibold text-white transition hover:bg-zinc-700">
             Ajouter à ma liste
           </button>
+        </div>
+
+        <div>
+          <h2 class="mb-3 text-2xl font-semibold text-white">Casting</h2>
+          <div id="movieCast" class="flex gap-4 overflow-x-auto"></div>
         </div>
       </div>
     </section>

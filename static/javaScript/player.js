@@ -18,4 +18,4 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error("Aucun ID trouvé pour charger la vidéo");
         document.body.innerHTML = "<h1 class='text-white text-center mt-20 text-2xl'>Erreur: Vidéo introuvable.</h1><button onclick='history.back()' class='m-auto block mt-4 text-white hover:underline'>Retour</button>";
     }
-});
+}); 

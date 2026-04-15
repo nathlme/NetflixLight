@@ -22,6 +22,47 @@ document.addEventListener('DOMContentLoaded', async () => {
             posterEl.alt = data.title || data.name;
         }
 
+        // Durée du fim
+        const durationEl = document.getElementById('movieDuration');
+
+        if (durationEl) {
+            
+            if (data.runtime) {
+                const hours = Math.floor(data.runtime / 60);
+                const minutes = data.runtime % 60;
+
+                durationEl.innerHTML = `<strong>Durée :</strong> ${hours}h ${minutes}min`;
+            }
+
+            else if (data.number_of_seasons) {
+                durationEl.innerHTML = `<strong>${data.number_of_seasons} Saisons</strong>`;
+            }
+            else {
+                durationEl.innerText = "Non disponible";
+            }
+        }
+
+        // Casting 
+        const castEl = document.getElementById("movieCast");
+
+        if (castEl && data.credits && data.credits.cast) {
+            const cast = data.credits.cast.slice(0, 10); 
+
+            castEl.innerHTML = cast.map(actor => {
+                const img = actor.profile_path
+                    ? `https://image.tmdb.org/t/p/w185${actor.profile_path}`
+                    : "https://via.placeholder.com/150x225";
+
+                return `
+                    <div class="flex flex-col items-center text-center min-w-[120px]">
+                        <img src="${img}" class="w-24 h-32 object-cover rounded-md mb-2">
+                        <p class="text-sm text-white">${actor.name}</p>
+                        <p class="text-xs text-zinc-400">${actor.character || ""}</p>
+                    </div>
+                `;
+            }).join("");
+        }
+
         // Date de sortie
         const releaseEl = document.getElementById('movieReleaseDate');
         if (releaseEl) {

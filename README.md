@@ -1,153 +1,177 @@
 # NetflixLight
 
-> Une application web inspirée de Netflix pour explorer films et séries avec une interface immersive et une navigation fluide.
+Application web inspiree de Netflix pour explorer des films et des series via TMDB, avec navigation SPA, authentification utilisateur, liste personnelle et PWA.
 
 ---
 
-##  Fonctionnalités
+## Fonctionnalites
 
--  Catalogue dynamique (films & séries)
--  Interface moderne inspirée Netflix
--  Navigation SPA sans rechargement
--  Page détail complète (casting, similaires…)
--  Système de favoris
--  Lecteur vidéo 
-
----
-
-##  Installation
-
-### 1. Cloner le projet
-
-    git clone https://github.com/nathlme/NetflixLight.git
-    cd NetflixLight
-
-### 2. Installer les dépendances
-
-    npm install
-
-### 3. Lancer le serveur
-
-    node src/app.js
-
-Accès :
-
-    http://localhost:3000
+- Catalogue dynamique films et series (TMDB)
+- Navigation SPA sans rechargement complet
+- Page detail avec informations de contenu
+- Lecteur video sur page dediee
+- Authentification utilisateur (inscription, connexion, deconnexion)
+- Ma liste en base SQLite
+- Historique recemment regardes
+- Page profil avec sections recemment regardes et ma liste
+- PWA (manifest + service worker)
 
 ---
 
-##  Configuration API TMDB
+## Prerequis
 
-1. Créer un compte sur TMDB  
-2. Aller dans **Settings → API**  
-3. Copier le **Bearer Token (v4)**
-
-### Créer un fichier `.env`
-
-    API_TOKEN= <COPIER LE TOKEN TMDB>
+- Node.js 18+
+- npm
 
 ---
 
-##  Architecture du projet
+## Installation
 
-    NetflixLight/
-    │
-    ├── src/
-    |   |── db/
-    │   │   └── NetflixDB.SQL
-    │   ├── app.js
-    │   ├── db.js
-    │   ├── loginCheck.js
-    │   └── registerCheck.js
-    │
-    ├── static/
-    │   ├── css/
-    │   │   ├── output.css
-    │   │   └── custom.css
-    │   │
-    │   ├── javaScript/
-    │   │   ├── login.js
-    │   │   ├── register.js
-    │   │   ├── player.js
-    │   │   ├── script.js
-    │   │   ├── movieDetails.js
-    │   │   └── moviePlayer.js
-    │   │
-    │   └── templates/
-    │       ├── layout.hbs
-    │       ├── index.html
-    │       ├── LoginPage.html
-    │       ├── RegisterPage.html
-    │       ├── MovieDetails.html
-    │       ├── videoPlayer.html
-    │       └── PlayerPage.html
-    │
-    ├── .env
-    ├── .gitignore
-    ├── package-lock.json
-    ├── package.json
-    └── README.md
+1. Cloner le projet
 
----
+```bash
+git clone https://github.com/nathlme/NetflixLight.git
+cd NetflixLight
+```
 
-##  Choix techniques
+1. Installer les dependances
 
-### Backend
-- Node.js + Express
-- Gestion des routes et proxy API
+```bash
+npm install
+```
 
-### Frontend
-- HTML + Tailwind CSS
-- Interface moderne et rapide à développer
+1. Configurer les variables d environnement
 
-### Templates
-- Handlebars (HBS)
-- Layout global avec header/footer
+Creer un fichier `.env` a la racine :
 
-### Navigation
-- SPA avec `fetch` + `history.pushState`
-- Navigation fluide sans rechargement
+```env
+API_TOKEN=<VOTRE_BEARER_TOKEN_TMDB>
+API_KEY= <VOTRE_KEY_TMDB>
+```
 
-### Base de données
-- SQLite
-- Stockage des utilisateurs
+Notes :
 
-### Authentification
-- `express-session`
-- `bcrypt` pour sécuriser les mots de passe
+- API_TOKEN est obligatoire.
+- API_KEY est obligatoire.
+
+1. Lancer le projet
+
+En production locale :
+
+```bash
+npm start
+```
+
+En developpement (nodemon) :
+
+```bash
+npm run dev
+```
+
+1. Ouvrir l application
+
+<http://localhost:3000>
 
 ---
 
-##  Fonctionnalités principales
+## Scripts npm
 
-- Navigation par catégories
-- Page détail dynamique :
-  - informations complètes
-  - casting
-  - contenus similaires
-- Lecteur vidéo
-- Gestion des favoris
-- Authentification utilisateur
+- npm start : lance le serveur Express.
+- npm run dev : lance le serveur avec nodemon.
 
 ---
 
-##  Notes
+## Architecture (resume)
 
-- Les vidéos proviennent de sources externes
-- Une connexion internet est nécessaire pour les appels à l’API TMDB
+```text
+NetflixLight/
+|-- src/
+|   |-- app.js
+|   |-- db.js
+|   |-- loginCheck.js
+|   |-- registerCheck.js
+|   |-- db/
+|       |-- NetflixDB.SQL
+|
+|-- static/
+|   |-- css/
+|   |-- img/
+|   |-- javaScript/
+|   |   |-- script.js
+|   |   |-- movieDetails.js
+|   |   |-- player.js
+|   |   |-- login.js
+|   |   |-- register.js
+|   |   |-- pwa.js
+|   |-- templates/
+|   |   |-- layout.hbs
+|   |   |-- index.html
+|   |   |-- MovieDetails.html
+|   |   |-- PlayerPage.html
+|   |   |-- LoginPage.html
+|   |   |-- RegisterPage.html
+|   |   |-- ListPage.html
+|   |   |-- ProfilePage.html
+|   |-- manifest.webmanifest
+|   |-- sw.js
+|
+|-- package.json
+|-- package-lock.json
+|-- README.md
+```
 
 ---
 
-##  Améliorations possibles
+## Stack technique
 
-- Favoris en base de données
-- Gestion des saisons/épisodes
-- Recherche avancée
-- Lazy loading des images
-- Optimisation SEO
+Backend
+
+- Node.js
+- Express
+- express-session
+- bcrypt
+- sqlite3
+
+Frontend
+
+- HTML
+- Tailwind CSS
+- JavaScript vanilla
+
+Templating
+
+- Handlebars (hbs)
+
+Navigation
+
+- Router SPA client (fetch + history.pushState)
+
+PWA
+
+- manifest.webmanifest
+- service worker (cache des assets et navigation)
 
 ---
 
-##  Auteur
+## Base de donnees
 
-Léo Gaiguant - Nathan Lamarche.
+Tables principales
+
+- users
+- user_watchlist
+- user_recently_watched
+
+La base SQLite est initialisee automatiquement au demarrage via `src/db.js`.
+
+---
+
+## Notes PWA
+
+- Si l interface semble desynchronisee apres une mise a jour, vider le cache PWA dans le navigateur.
+- Le service worker ne met pas en cache les routes `/api` afin d eviter les donnees utilisateur obsoletes.
+
+---
+
+## Auteurs
+
+Leo Gaiguant - Nathan Lamarche

@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#111827">
+    <link rel="manifest" href="/manifest.webmanifest">
     <title>{{Title}}</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
@@ -14,8 +16,8 @@
                 
                 <div class="hidden md:flex items-center gap-6">
                     <a href="/" class="hover:text-gray-300 transition">Accueil</a>
-                    <a href="list" class="hover:text-gray-300 transition">Ma liste</a>
-                    <input type="text" placeholder="Rechercher..." class="bg-gray-800 text-white px-3 py-2 rounded placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600">
+                    <a href="/list" class="hover:text-gray-300 transition">Ma liste</a>
+                    <input id="searchInputDesktop" type="text" placeholder="Rechercher..." class="bg-gray-800 text-white px-3 py-2 rounded placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600">
                 </div>
                 <div id="compte" class="flex items-center">
                     <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-red-600"></div>
@@ -23,9 +25,9 @@
             </div>
 
             <div id="mobileMenu" class="hidden md:hidden bg-gray-800 mt-4 py-4 px-4 space-y-3">
-                <a href="#" class="block hover:text-gray-300 transition">Accueil</a>
-                <a href="#" class="block hover:text-gray-300 transition">Ma liste</a>
-                <input type="text" placeholder="Rechercher..." class="w-full bg-gray-700 text-white px-3 py-2 rounded placeholder-gray-500">
+                <a href="/" class="block hover:text-gray-300 transition">Accueil</a>
+                <a href="/list" class="block hover:text-gray-300 transition">Ma liste</a>
+                <input id="searchInputMobile" type="text" placeholder="Rechercher..." class="w-full bg-gray-700 text-white px-3 py-2 rounded placeholder-gray-500">
                 <div id="compteMobile">
 
                 </div>
@@ -78,6 +80,7 @@
             </div>
         </div>
     </footer>
-    <script src="/js/script.js"></script>
+    <script src="/js/pwa.js?v=4"></script>
+    <script src="/js/script.js?v=5"></script>
 </body>
 </html>

@@ -9,10 +9,7 @@
 </head>
 
 <body class="min-h-screen bg-zinc-950 text-white">
-  <div id="backdropBg" class="fixed inset-0 bg-cover bg-center"></div>
-  <div class="fixed inset-0 bg-black/70 backdrop-blur-sm"></div>
-
-  <main class="relative z-10 min-h-screen flex">
+  <main class="min-h-screen flex text-white">
     
     <!-- COLONNE GAUCHE : POSTER -->
     <section class="w-full max-w-[40%] min-w-[320px] flex items-start justify-center p-8 pt-12">
@@ -25,11 +22,11 @@
     </section>
 
     <!-- COLONNE DROITE : INFOS -->
-    <section class="flex-1 flex items-start px-10 py-12">
-      <div class="w-full max-w-4xl space-y-8 rounded-2xl bg-black/35 p-8">
+    <section class="flex-1 flex items-center bg-zinc-950 px-10 py-12 text-white">
+      <div class="w-full max-w-4xl space-y-8">
         
         <!-- TITRE -->
-        <h1 id="movieTitle" class="text-5xl font-bold leading-tight md:text-6xl"></h1>
+        <h1 id="movieTitle" class="text-5xl font-bold leading-tight md:text-6xl text-white"></h1>
 
         <!-- META -->
         <div class="flex flex-wrap gap-x-10 gap-y-3 text-base text-zinc-300">
@@ -56,8 +53,8 @@
           <button id="watchButton" class="rounded-lg bg-red-600 px-8 py-3 text-base font-semibold text-white transition hover:bg-red-700">
             Regarder
           </button>
-          <button class="rounded-lg border border-zinc-600 bg-zinc-800 px-8 py-3 text-base font-semibold text-white transition hover:bg-zinc-700">
-            Ajouter à ma liste
+          <button id="watchlistButton" class="rounded-lg border border-zinc-600 bg-zinc-800 px-8 py-3 text-base font-semibold text-white transition hover:bg-zinc-700">
+            + Ajouter a ma liste
           </button>
         </div>
 

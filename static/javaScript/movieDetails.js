@@ -22,6 +22,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             posterEl.alt = data.title || data.name;
         }
 
+        // Backdrop 
+        const backdropEl = document.getElementById("backdropBg");
+
+        if (backdropEl) {
+            const backdropUrl = data.backdrop_path
+                ? `https://image.tmdb.org/t/p/original${data.backdrop_path}`
+                : "https://via.placeholder.com/1920x1080";
+
+            backdropEl.style.backgroundImage = `url('${backdropUrl}')`;
+        }
+
         // Durée du fim
         const durationEl = document.getElementById('movieDuration');
 
@@ -35,10 +46,43 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             else if (data.number_of_seasons) {
-                durationEl.innerHTML = `<strong>${data.number_of_seasons} Saisons</strong>`;
+                if (data.number_of_seasons == 1) {
+                    durationEl.innerHTML = `<strong>${data.number_of_seasons} Saison</strong>`;
+                }else {
+                    durationEl.innerHTML = `<strong>${data.number_of_seasons} Saisons</strong>`;
+                }   
             }
             else {
                 durationEl.innerText = "Non disponible";
+            }
+        }
+
+        // Similar movies
+        const similarEl = document.getElementById("similarContent");
+
+        if (similarEl) {
+            const similarResponse = await fetch(`/api/tmdb/${type}/${id}/similar?language=fr-FR`);
+            const similarData = await similarResponse.json();
+
+            if (similarData.results && similarData.results.length > 0) {
+                similarEl.innerHTML = similarData.results.slice(0, 10).map(item => {
+                    const poster = item.poster_path
+                        ? `https://image.tmdb.org/t/p/w300${item.poster_path}`
+                        : "https://via.placeholder.com/200x300";
+
+                    const title = item.title || item.name || "Titre inconnu";
+                    const itemType = item.media_type || type;
+
+                    return `
+                        <div onclick="window.location.href='/content/${itemType}/${item.id}'"
+                            class="min-w-[140px] cursor-pointer">
+                            <img src="${poster}" alt="${title}" class="w-full rounded-lg mb-2">
+                            <p class="text-sm text-white">${title}</p>
+                        </div>
+                    `;
+                }).join("");
+            } else {
+                similarEl.innerHTML = `<p class="text-zinc-400">Aucun contenu similaire.</p>`;
             }
         }
 

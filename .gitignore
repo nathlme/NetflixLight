@@ -84,7 +84,7 @@ static/css/output.css
 # Nuxt.js build / generate output
 .nuxt
 dist
-*.css
+    
 
 # Gatsby files
 .cache/

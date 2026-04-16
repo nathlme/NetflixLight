@@ -8,7 +8,6 @@ const db = require("./db");
 const { ComparePassword } = require("./loginCheck");
 const session = require("express-session");
 const fetchFromWeb = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
-const DEFAULT_EXTERNAL_PLAYER_DOMAIN = "https://tv.coflix.tv";
 
 
 const app=express()
